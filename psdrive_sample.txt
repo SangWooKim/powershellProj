@@ -1,7 +1,6 @@
+ï»¿#psë‚´ë¶€ì—ì„œ ì„ì‹œë¡œ ë„¤íŠ¸ì›Œí¬ ë“œë¼ì´ë¸Œë¥¼ ë§ˆìš´íŠ¸ í•œë‹¤.
+New-PSDrive -Name "w" -PSProvider "FileSystem" -Root "\\127.0.0.1 ë˜ëŠ” PC-Name\share_test"
 
-#ps³»ºÎ¿¡¼­ ÀÓ½Ã·Î ³×Æ®¿öÅ© µå¶óÀÌºê¸¦ ¸¶¿îÆ® ÇÑ´Ù.
-New-PSDrive -Name "w" -PSProvider "FileSystem" -Root "\\127.0.0.1 ¶Ç´Â PC-Name\share_test"
-
-#³×Æ®¿öÅ© µå¶óÀÌºê¸¦ ¸¶¿îÆ® ÇÑ´Ù. ÀÌ·¸°Ô ÇÏ¸é À©µµ¿ì Å½»ö±â¿¡¼­µµ º¼ ¼ö ÀÖ´Ù.
+#ë„¤íŠ¸ì›Œí¬ ë“œë¼ì´ë¸Œë¥¼ ë§ˆìš´íŠ¸ í•œë‹¤, 
 $drive = new-object -com wscript.network
 $drive.MapNetworkDrive("x:", "\\PC-NAME\share_test")
