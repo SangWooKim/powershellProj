@@ -1,0 +1,7 @@
+
+#ps내부에서 임시로 네트워크 드라이브를 마운트 한다.
+New-PSDrive -Name "w" -PSProvider "FileSystem" -Root "\\127.0.0.1 또는 PC-Name\share_test"
+
+#네트워크 드라이브를 마운트 한다. 이렇게 하면 윈도우 탐색기에서도 볼 수 있다.
+$drive = new-object -com wscript.network
+$drive.MapNetworkDrive("x:", "\\PC-NAME\share_test")
