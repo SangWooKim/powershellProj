@@ -2,19 +2,27 @@
   파워쉘로 원격지에 있는 PC에 인스톨러 설치를 하는 스크립트
 #>
 
+#신뢰 목록에 추가
+Set-Item WSMan:\localhost\Client\TrustedHosts -Value "192.168.9.241"
+
+
 #비밀번호를 암호화 하여 저장하는단계 아래와 같이 입력 후 원격 PC의 윈도우 암호를 입력한다.
 read-host -assecurestring | convertfrom-securestring | out-file C:\cred.txt
+
 #암호화된 비밀번호를 $password 변수에 저장
 $password = get-content C:\cred.txt | convertto-securestring
 #인증 정보를 적당한 변수에 저장
-$loginInfo = new-object -typename System.Management.Automation.PSCredential -argumentlist "window_user_name",$password
+$loginInfo = new-object -typename System.Management.Automation.PSCredential -argumentlist "build",$password
+
 #인증정보로 원격 PC에 접속
-enter-pssession -computername "127.0.0.1  ip정보를 넣는다." -credential $loginInfo
+enter-pssession -computername "192.168.9.241" -credential $loginInfo
+
 #원격 PC에 접속한 상태에서 web client로 ftp를 접속해서 파일을 받는다.
 $save_path = "c:\download\XXX.exe"
 $ftp_server = "ftp://ftp_user:ftp_pass@ftp_ip_address:21/download_url/XXX.exe"
 $webclient=NEW-object system.net.webclient
 $uri = new-object system.uri($ftp_server)
 $webclient.downloadfile($uri, $save_path)
+
 #다운로드 완료되면 실행해 준다.
 start-process "c:\download\XXX.exe"

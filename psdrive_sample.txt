@@ -1,6 +1,33 @@
-﻿#ps내부에서 임시로 네트워크 드라이브를 마운트 한다.
+﻿#net use로 마운트 하기
+net use x: \\192.168.9.176\share_test 2358 /user:insoft
+
+#ps 내부에서 임시로 네트워크 드라이브를 마운트 한다.
 New-PSDrive -Name "w" -PSProvider "FileSystem" -Root "\\127.0.0.1 또는 PC-Name\share_test"
 
 #네트워크 드라이브를 마운트 한다, 
 $drive = new-object -com wscript.network
 $drive.MapNetworkDrive("x:", "\\PC-NAME\share_test")
+
+#파워쉘 헬프
+get-help * | more
+get-help * -examples
+
+
+#접속 정보를 만들어 준다.
+read-host -assecurestring | convertfrom-securestring | out-file C:\cred.txt
+$password = get-content C:\cred.txt | convertto-securestring
+$loginInfo = new-object -typename System.Management.Automation.PSCredential -argumentlist "window_user_name",$password
+New-PSDrive -Name "w" -PSProvider "FileSystem" -Root "\\192.168.9.176\share_test" -credential $loginInfo
+
+
+$User = "\\192.168.9.176\insoft"
+$PWord = ConvertTo-SecureString -String "2358" -AsPlainText -Force
+$Credential = New-Object -TypeName "System.Management.Automation.PSCredential" -ArgumentList $User, $PWord
+New-PSDrive -Name "w" -PSProvider "FileSystem" -Root  "\\192.168.9.176\share_test" -credential $Credential
+
+####################4.0환경에서 정상 동작함.####################
+1. read-host -assecurestring | convertfrom-securestring | out-file c:\powershell\PASSWORD.txt
+2. PS > 비밀번호 입력
+3. $encrypted = Get-Content c:\powershell\PASSWORD.txt | ConvertTo-SecureString
+4. $credential = New-Object System.Management.Automation.PsCredential("insoft", $encrypted)
+5. New-PSDrive -name "z" -PSProvider FileSystem -Root \\192.168.9.176\share_test -Persist -Credential $credential
